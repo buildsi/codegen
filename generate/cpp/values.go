@@ -1,12 +1,14 @@
 package cpp
 
 import (
-	"github.com/buildsi/codegen/utils"
+	"fmt"
 	"log"
+
+	"github.com/buildsi/codegen/utils"
 )
 
 // GetIntegralValue returns an integral value depending on the type
-func GetIntegralValue(integralType string, isSigned bool) string {
+func GetIntegralValue(integralType string, isSigned bool, name string) string {
 
 	switch integralType {
 	case "int":
@@ -22,9 +24,9 @@ func GetIntegralValue(integralType string, isSigned bool) string {
 	case "size_t":
 		return getSizeTValue()
 
-	// TODO this one has weird syntax
+	// This is multiple lines
 	case "__int128":
-		return "123"
+		return getInt128Value(name)
 	}
 
 	log.Fatalf("Unrecognized integral type %s\n", integralType)
@@ -80,11 +82,29 @@ func getLongLong(isSigned bool) string {
 		}
 		return string(utils.RandomInt(9223372036854775807))
 	}
-	// TODO this is not right, what is long long unsigned in go?
-	return string(utils.RandomInt(9223372036854775807))
+	// Max unsigned is 18446744073709551615
+	return string(utils.RandomUint64())
 }
 
 // size_t on 64 bit will be 64 bit unsigned integer
 func getSizeTValue() string {
 	return string(utils.RandomInt(65535))
+}
+
+// get an int128 value
+func getInt128Value(name string) string {
+
+	//   __int128_t c;
+	//   c = 0x0000000000000006;
+	//   c = c << 64;
+	//   c += 0x0000000000000007;
+
+	// This needs custom parsing
+	firstPart := "0x" + fmt.Sprintf("%12d", utils.RandomInt(9999999999999999))
+	secondPart := "0x" + fmt.Sprintf("%12d", utils.RandomInt(9999999999999999))
+
+	result := "\n     " + name + " = " + firstPart + ";\n"
+	result += "     " + name + " << 64;\n"
+	result += "     " + name + " = " + secondPart + ";\n"
+	return result
 }

@@ -35,7 +35,16 @@ type IntegralFormalParam struct {
 
 // Declaration of an integral formal param
 func (p IntegralFormalParam) Declaration(withValue bool) string {
+
 	result := p.Prefix() + " " + p.Type + " " + p.Name
+
+	if p.GetType() == "__int128" {
+		if withValue {
+			result += ";"
+			result += p.Value
+			return result
+		}
+	}
 
 	// A declaration outside of function params
 	if withValue {
@@ -46,6 +55,9 @@ func (p IntegralFormalParam) Declaration(withValue bool) string {
 
 // GetValue returns the string representation of the value
 func (p IntegralFormalParam) GetValue() string {
+	if p.GetType() == "__int128" {
+		return p.GetName()
+	}
 	return p.Value
 }
 

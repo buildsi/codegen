@@ -121,11 +121,12 @@ func NewFormalParam() FormalParam {
 func NewIntegral() FormalParam {
 
 	// Get the type beforehand to derive a random value for it
+	name := "fpInt" + strings.Title(utils.RandomName())
 	integralType := utils.RandomChoice(GetIntegralTypes())
 	isSigned := utils.RandomBool()
-	value := GetIntegralValue(integralType, isSigned)
+	value := GetIntegralValue(integralType, isSigned, name)
 
-	return IntegralFormalParam{Name: "fpInt" + strings.Title(utils.RandomName()),
+	return IntegralFormalParam{Name: name,
 		Type:      integralType,
 		IsSigned:  isSigned,
 		Value:     value,
