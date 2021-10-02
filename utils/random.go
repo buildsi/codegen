@@ -23,6 +23,10 @@ func RandomInt(maxval int) int {
 	return seed.Intn(maxval)
 }
 
+func RandomUint64() uint64 {
+	return seed.Uint64()
+}
+
 // RandomBool returns a boolean choice at the user's threshold
 func RandomBoolWeight(chanceTrue float32) bool {
 	return rand.Float32() < chanceTrue
