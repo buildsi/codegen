@@ -25,7 +25,7 @@ func FindOverlap(one []string, two []string) []string {
 }
 
 // Return strings that are in first list, but not second
-func FindMissingInSecond(one []string, two []string) []string {
+func FindDiff(one []string, two []string) []string {
 
 	var difference []string
 

@@ -41,55 +41,79 @@ $ go run main.go gen examples/cpp/simple/codegen.yaml
 ```
 ```bash
 $ go run main.go gen examples/cpp/simple/codegen.yaml 
-// foo.h
+$ go run main.go gen examples/cpp/simple/codegen.yaml 
+// Printing [0:foo.h]
 #pragma once
 
 #include <cstdint>
 
-void Function(unsigned __int128 fpIntSoeopdoenqlqrgqd, double * fpFloatVnhzmefqtzm, _Complex long double fpFloatAidufwrtag, _Complex float * fpFloatKejlqzpwjktccunio, _Complex long double * fpFloatDwqfjuyoza, unsigned long fpIntEcpttoiwlotzlaxxhv);
-
-
-// foo.c
+void Function(unsigned long fpIntDynndmnzxxrnbspo, long double * fpFloatLqzfsalachbvn, signed char fpIntRhurjehmkggbzpfjb, signed char fpIntDcnyrtzxxv, signed char fpIntXipsxerugx);
+// Printing [1:foo.c]
 #include <cstdio>
-#include "struct.h"
+#include <ostream>
+#include <iostream>
+#include "foo.h"
 
-void Function(unsigned __int128 fpIntSoeopdoenqlqrgqd, double * fpFloatVnhzmefqtzm, _Complex long double fpFloatAidufwrtag, _Complex float * fpFloatKejlqzpwjktccunio, _Complex long double * fpFloatDwqfjuyoza, unsigned long fpIntEcpttoiwlotzlaxxhv) {
+void Function(unsigned long fpIntDynndmnzxxrnbspo, long double * fpFloatLqzfsalachbvn, signed char fpIntRhurjehmkggbzpfjb, signed char fpIntDcnyrtzxxv, signed char fpIntXipsxerugx) {
 
-     println(fpIntSoeopdoenqlqrgqd);
-     println(&fpFloatVnhzmefqtzm);
-     println(fpFloatAidufwrtag);
-     println(&fpFloatKejlqzpwjktccunio);
-     println(&fpFloatDwqfjuyoza);
-     println(fpIntEcpttoiwlotzlaxxhv);
+     std::cout <<  fpIntDynndmnzxxrnbspo << std::endl;
+     std::cout << &fpFloatLqzfsalachbvn << std::endl;
+     std::cout <<  fpIntRhurjehmkggbzpfjb << std::endl;
+     std::cout <<  &fpIntDcnyrtzxxv << std::endl;
+     std::cout <<  &fpIntXipsxerugx << std::endl;
 
 }
-
-
-// main.c
-#include "struct.h"
+// Printing [2:main.c]
+#include "foo.h"
+#include <iostream>
 
 int main() {
 
      // Initialize each formal param
-     unsigned __int128 fpIntSoeopdoenqlqrgqd = 123;
-     double * fpFloatVnhzmefqtzm = 123.33;
-     _Complex long double fpFloatAidufwrtag = 123.33;
-     _Complex float * fpFloatKejlqzpwjktccunio = 123.33;
-     _Complex long double * fpFloatDwqfjuyoza = 123.33;
-     unsigned long fpIntEcpttoiwlotzlaxxhv = �;
+     unsigned long fpIntDynndmnzxxrnbspo = �;
+     long double * fpFloatLqzfsalachbvn = �;
+     signed char fpIntRhurjehmkggbzpfjb = 'L';
+     signed char fpIntDcnyrtzxxv = 'E';
+     signed char fpIntXipsxerugx = 'B';
 
      // bigcall(1, 2, 3, 4, 5, bigthing);
-     Function(123, 123.33, 123.33, 123.33, 123.33, �);
+     Function(fpIntDynndmnzxxrnbspo, fpFloatLqzfsalachbvn, fpIntRhurjehmkggbzpfjb, fpIntDcnyrtzxxv, fpIntXipsxerugx);
 }
 ```
 
-Currently the rendered template is printed to the screen (and note not all the float/complex values are parsed correctly yet)
-and in the future will likely be saved to file or some other user preference.
+If you don't provide an output directory (to be shown next) only one example will be printed to the screen. To provide an output
+directory, you can do:
+
+```bash
+$ go run main.go gen examples/cpp/simple/codegen.yaml --outdir examples/cpp/simple
+```
+
+That will create subfolders there, numbered from 1..N where N is the number that you've asked for in your codegen.yaml.
+
+```bash
+$ tree examples/cpp/simple/1/
+examples/cpp/simple/1/
+├── codegen.yaml
+├── foo.c
+├── foo.h
+├── main.c
+└── Makefile
+
+0 directories, 5 files
+```
 
 ### Writing a Template
 
 A template is a folder with a codegen.yaml file and one or more files that are to be filled in (templates).
-As an example, let's look at [examples/cpp/simple](examples/cpp/simple). 
+As an example, let's look at [examples/cpp/simple](examples/cpp/simple). For any template, you should include:
+
+
+```cpp
+#include <ostream>
+#include <iostream>
+```
+
+if you use any of the printing functions.
 
 #### codegen.yaml
 The codegen.yaml file is going to tell us the following:

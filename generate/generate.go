@@ -8,12 +8,12 @@ import (
 )
 
 // Generate generates code based on a config file
-func Generate(configFile string) {
+func Generate(configFile string, outdir string) {
 	conf := config.Load(configFile)
 
 	switch conf.Language {
 	case "cpp":
-		cpp.Generate(conf)
+		cpp.Generate(conf, outdir)
 	default:
 		fmt.Printf("%s is not a supported language", conf.Language)
 	}

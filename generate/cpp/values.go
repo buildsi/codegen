@@ -36,7 +36,48 @@ func GetIntegralValue(integralType string, isSigned bool, name string) string {
 // GetFloatValue returns a float value depending on type of float and if is complex
 // TODO not written yet!
 func GetFloatValue(floatType string, isComplex bool) string {
-	return "123.33"
+
+	switch floatType {
+	case "float":
+		return getFloatValue()
+	case "double":
+		return getDoubleValue()
+	case "long double":
+		return getLongDoubleValue()
+	}
+
+	log.Fatalf("Unrecognized float type %s\n", floatType)
+	return ""
+}
+
+// getFloatValue
+func getFloatValue() string {
+	// 1.17549e-038 to 3.40282e+038
+	return insertDecimal(fmt.Sprintf("%d", utils.RandomFloat()))
+}
+
+func getDoubleValue() string {
+	// TODO this range is probably too small, should be 2.22507e-308, 1.79769e308
+	return insertDecimal(fmt.Sprintf("%d", utils.RandomFloat()))
+}
+
+func getLongDoubleValue() string {
+	// TODO this range is probably too small, should be 2.22507e-308, 1.79769e+308
+	return insertDecimal(fmt.Sprintf("%d", utils.RandomFloat()))
+}
+
+// insertDecimal adds a random decimal to somewhere in the string
+func insertDecimal(value string) string {
+
+	idx := utils.RandomIntRange(1, len(value)-1)
+	result := ""
+	for i, c := range value {
+		result += string(c)
+		if i == idx {
+			result += "."
+		}
+	}
+	return result
 }
 
 // https://docs.microsoft.com/en-us/cpp/c-language/cpp-integer-limits?view=msvc-160
@@ -52,12 +93,12 @@ func getIntValue(isSigned bool) string {
 	// Can we support negative integers?
 	if isSigned {
 		if utils.RandomBool() {
-			return "-" + string(utils.RandomInt(2147483648))
+			return "-" + fmt.Sprintf("%d", utils.RandomInt(2147483648))
 		}
-		return string(utils.RandomInt(2147483647))
+		return fmt.Sprintf("%d", (utils.RandomInt(2147483647)))
 
 	}
-	return string(utils.RandomInt(4294967295))
+	return fmt.Sprintf("%d", (utils.RandomInt(4294967295)))
 }
 
 // getShortValue returns a random short value
@@ -66,11 +107,11 @@ func getShortValue(isSigned bool) string {
 	// short int and int: -32,767 to 32,767
 	if isSigned {
 		if utils.RandomBool() {
-			return string(utils.RandomInt(32767))
+			return fmt.Sprintf("%d", utils.RandomInt(32767))
 		}
-		return "-" + string(utils.RandomInt(32768))
+		return "-" + fmt.Sprintf("%d", utils.RandomInt(32768))
 	}
-	return string(utils.RandomInt(65535))
+	return fmt.Sprintf("%d", utils.RandomInt(65535))
 }
 
 // getLongLong returns a long long value
@@ -78,12 +119,12 @@ func getLongLong(isSigned bool) string {
 
 	if isSigned {
 		if utils.RandomBool() {
-			return "-" + string(utils.RandomInt(9223372036854775807)) // should go to ..8
+			return "-" + fmt.Sprintf("%d", utils.RandomInt(9223372036854775807)) // should go to ..8
 		}
-		return string(utils.RandomInt(9223372036854775807))
+		return fmt.Sprintf("%d", utils.RandomInt(9223372036854775807))
 	}
 	// Max unsigned is 18446744073709551615
-	return string(utils.RandomUint64())
+	return fmt.Sprintf("%d", utils.RandomUint64())
 }
 
 // size_t on 64 bit will be 64 bit unsigned integer

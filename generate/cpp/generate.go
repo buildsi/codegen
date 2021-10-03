@@ -1,6 +1,7 @@
 package cpp
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -13,15 +14,13 @@ import (
 	"text/template"
 )
 
-func Generate(conf config.Conf) {
+func Generate(conf config.Conf, outdir string) {
 
 	// Ensure that required files exist, and update to absolute path
-	for i, file := range conf.Files {
-		file = filepath.Join(conf.Root, file)
-		if !utils.Exists(file) {
+	for _, file := range conf.Files {
+		if !utils.Exists(filepath.Join(conf.Root, file)) {
 			log.Fatalf("%s does not exist.", file)
 		}
-		conf.Files[i] = file
 	}
 
 	// Currently only supported is random
@@ -39,14 +38,17 @@ func Generate(conf config.Conf) {
 
 	switch parts[0] {
 	case "random":
-		GenerateCppRandom(conf, int(num))
+		GenerateCppRandom(conf, int(num), outdir)
 	default:
 		fmt.Printf("Type %s is not supported.", parts[0])
 	}
 }
 
 // GenerateCppRandom generates randomized types for all templates
-func GenerateCppRandom(conf config.Conf, num int) {
+func GenerateCppRandom(conf config.Conf, num int, outdir string) {
+
+	// Get other files in output directory
+	paths := utils.FindDiff(utils.ListDir(conf.Root, false, true), conf.Files)
 
 	// TODO if we generate multiple, can eventually use co-routine or channels?
 	for i := 0; i < num; i++ {
@@ -61,24 +63,52 @@ func GenerateCppRandom(conf config.Conf, num int) {
 			}
 		}
 
+		// If we don't have an output directory,  make it (start at 1, not 0)
+		outsubdir := filepath.Join(outdir, fmt.Sprintf("%x", i+1))
+		if outdir != "" {
+			os.MkdirAll(outsubdir, os.ModePerm)
+		}
+
 		// For each file, read it in...
-		for i, file := range conf.Files {
-			content := utils.ReadFile(file)
-			templateName := filepath.Base(file)
+		for i, templateName := range conf.Files {
+
+			file := filepath.Join(conf.Root, templateName)
 
 			// Create a new template from the file content
-			t := template.Must(template.New(templateName).Funcs(templateHelpers).Parse(content))
+			t := template.Must(template.New(templateName).Funcs(templateHelpers).ParseFiles(file))
 
-			if i != 0 {
-				fmt.Printf("\n\n")
-			}
 			// And render the functions into it
-			fmt.Println("//", templateName)
-			t.Execute(os.Stdout, funcs)
-			// To prevent from printint to the screen, t.Execute(ioutil.Discard, funcs)
+			if outdir != "" {
+				fmt.Printf("// Writing [%x:%s]\n", i, templateName)
+				WriteTemplate(filepath.Join(outsubdir, templateName), t, &funcs)
+			} else {
+				fmt.Printf("// Printing [%x:%s]\n", i, templateName)
+				t.Execute(os.Stdout, funcs)
+				// To prevent from printint to the screen, t.Execute(ioutil.Discard, funcs)
+			}
+		}
+		// Copy the remaining files there
+		if outdir != "" {
+			for _, path := range paths {
+				utils.CopyFile(filepath.Join(conf.Root, path), filepath.Join(outsubdir, path))
+			}
+
+			// If not writing to file, only allow printing one
+		} else {
+			break
 		}
 	}
 
+}
+
+// WriteTemplate to a filepath
+func WriteTemplate(path string, t *template.Template, funcs *map[string]Function) {
+
+	var buf bytes.Buffer
+	if err := t.Execute(&buf, funcs); err != nil {
+		log.Fatalf("Cannot write template to buffer: %x", err)
+	}
+	utils.WriteFile(path, buf.String())
 }
 
 // Generate a function from an entry
@@ -96,7 +126,7 @@ func GenerateFunction(name string, entry config.Render) Function {
 		if entry.Parameters.Min >= entry.Parameters.Max {
 			log.Fatalf("Function parameter min cannot be >= max.")
 		}
-		num = utils.RandomRange(entry.Parameters.Min, entry.Parameters.Max)
+		num = utils.RandomIntRange(entry.Parameters.Min, entry.Parameters.Max)
 	}
 	for i := 0; i < num; i++ {
 		params = append(params, NewFormalParam())

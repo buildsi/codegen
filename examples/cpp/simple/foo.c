@@ -1,5 +1,7 @@
 #include <cstdio>
-#include "struct.h"
+#include <ostream>
+#include <iostream>
+#include "foo.h"
 
 void {{ .Function | GetFunctionName }}({{ .Function | AsFormalParams }}) {
 
