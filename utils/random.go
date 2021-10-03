@@ -36,14 +36,40 @@ func RandomBoolWeight(chanceTrue float32) bool {
 const charset = "abcdefghijklmnopqrstuvwxyz"
 const capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
 // Get a random character
 func RandomChar() string {
-	chars := charset + capitals
-	return string(chars[seed.Intn(len(chars))])
+	b := make([]rune, 1)
+	b[0] = letters[seed.Intn(len(letters))]
+	return string(b)
 }
 
-func RandomRange(min int, max int) int {
+func RandomIntRange(min int, max int) int {
 	return seed.Intn(max-min) + min
+}
+
+// RandomFloatRange generates a random float in a rnage
+func RandomFloatRange(min uint64, max uint64) uint64 {
+	return randomFloatHelper(max-min) + min
+}
+
+const maxInt64 uint64 = 1<<63 - 1
+
+func randomFloatHelper(n uint64) uint64 {
+	if n < maxInt64 {
+		return uint64(seed.Int63n(int64(n + 1)))
+	}
+	x := seed.Uint64()
+	for x > n {
+		x = seed.Uint64()
+	}
+	return x
+}
+
+// RandomFloat returns a random floating point
+func RandomFloat() uint64 {
+	return seed.Uint64()
 }
 
 // RandomName generates a random name for a function, variaable, etc.

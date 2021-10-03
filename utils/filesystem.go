@@ -90,7 +90,7 @@ func ListDir(path string, includeDir bool, includeFile bool) []string {
 		// If it's a directory and we want directories, add it
 		if fileInfo.IsDir() && includeDir {
 			results = append(results, file.Name())
-		} else if includeFile {
+		} else if !fileInfo.IsDir() && includeFile {
 			results = append(results, file.Name())
 		}
 	}
@@ -114,6 +114,7 @@ func ReadFile(path string) string {
 
 // WriteFile and some content to the filesystem
 func WriteFile(path string, content string) error {
+
 	filey, err := os.Create(path)
 	if err != nil {
 		return err
@@ -125,7 +126,7 @@ func WriteFile(path string, content string) error {
 		return err
 	}
 	err = filey.Sync()
-	return err
+	return nil
 }
 
 // Find files in a directory based on a pattern

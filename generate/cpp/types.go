@@ -20,8 +20,9 @@ type FormalParam interface {
 }
 
 // INTEGRAL Possible integral types
+// TODO need to add size_t
 func GetIntegralTypes() []string {
-	return []string{"char", "short", "int", "long", "long long", "size_t", "__int128"}
+	return []string{"char", "short", "int", "long", "long long", "__int128"}
 }
 
 // Integral Types
@@ -97,7 +98,7 @@ func (p IntegralFormalParam) Print() string {
 		name = "&" + p.Name
 	}
 	// TODO we will want custom printing based on the type here
-	return "println(" + name + ");"
+	return "std::cout <<  " + name + " << std::endl;"
 }
 
 func GetFloatTypes() []string {
@@ -169,5 +170,5 @@ func (p FloatFormalParam) Print() string {
 		return "printf(\"%ld\n\"," + name + ");"
 	}
 	// TODO we will want more custom formatting based on the type here
-	return "println(" + name + ");"
+	return "std::cout << " + name + " << std::endl;"
 }

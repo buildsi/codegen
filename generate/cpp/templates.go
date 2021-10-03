@@ -50,7 +50,7 @@ var templateHelpers template.FuncMap = map[string]interface{}{
 	"CallFunction": func(f Function) string {
 		render := f.Name + "("
 		for i, param := range f.FormalParams {
-			render += param.GetValue()
+			render += param.GetName()
 			if i != len(f.FormalParams)-1 {
 				render += ", "
 			}
