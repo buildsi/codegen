@@ -40,27 +40,26 @@ To parse an example (this example renders one randomization):
 $ go run main.go gen examples/cpp/simple/codegen.yaml 
 ```
 ```bash
-$ go run main.go gen examples/cpp/simple/codegen.yaml 
-$ go run main.go gen examples/cpp/simple/codegen.yaml 
 // Printing [0:foo.h]
 #pragma once
 
 #include <cstdint>
 
-void Function(unsigned long fpIntDynndmnzxxrnbspo, long double * fpFloatLqzfsalachbvn, signed char fpIntRhurjehmkggbzpfjb, signed char fpIntDcnyrtzxxv, signed char fpIntXipsxerugx);
+void Function(unsigned int fpIntOnnjnhtahwkfzet, double * fpFloatEsybudtnmugtrh, signed __int128 fpIntZaziszlugirfp, _Complex long double * fpFloatIrwlzglwed, _Complex long double * fpFloatHhyjeeohgnerv, unsigned long long fpIntIvfzglggniy);
 // Printing [1:foo.c]
 #include <cstdio>
 #include <ostream>
 #include <iostream>
 #include "foo.h"
 
-void Function(unsigned long fpIntDynndmnzxxrnbspo, long double * fpFloatLqzfsalachbvn, signed char fpIntRhurjehmkggbzpfjb, signed char fpIntDcnyrtzxxv, signed char fpIntXipsxerugx) {
+void Function(unsigned int fpIntOnnjnhtahwkfzet, double * fpFloatEsybudtnmugtrh, signed __int128 fpIntZaziszlugirfp, _Complex long double * fpFloatIrwlzglwed, _Complex long double * fpFloatHhyjeeohgnerv, unsigned long long fpIntIvfzglggniy) {
 
-     std::cout <<  fpIntDynndmnzxxrnbspo << std::endl;
-     std::cout << &fpFloatLqzfsalachbvn << std::endl;
-     std::cout <<  fpIntRhurjehmkggbzpfjb << std::endl;
-     std::cout <<  &fpIntDcnyrtzxxv << std::endl;
-     std::cout <<  &fpIntXipsxerugx << std::endl;
+     std::cout <<  fpIntOnnjnhtahwkfzet << std::endl;
+     std::cout << &fpFloatEsybudtnmugtrh << std::endl;
+     std::cout <<  fpIntZaziszlugirfp << std::endl;
+     std::cout << &fpFloatIrwlzglwed << std::endl;
+     std::cout << &fpFloatHhyjeeohgnerv << std::endl;
+     std::cout <<  fpIntIvfzglggniy << std::endl;
 
 }
 // Printing [2:main.c]
@@ -70,14 +69,19 @@ void Function(unsigned long fpIntDynndmnzxxrnbspo, long double * fpFloatLqzfsala
 int main() {
 
      // Initialize each formal param
-     unsigned long fpIntDynndmnzxxrnbspo = �;
-     long double * fpFloatLqzfsalachbvn = �;
-     signed char fpIntRhurjehmkggbzpfjb = 'L';
-     signed char fpIntDcnyrtzxxv = 'E';
-     signed char fpIntXipsxerugx = 'B';
+     unsigned int fpIntOnnjnhtahwkfzet = 886107401;
+     double * fpFloatEsybudtnmugtrh = 88392455.99064827235;
+     signed __int128 fpIntZaziszlugirfp;
+     fpIntZaziszlugirfp = 0x4311818582100267;
+     fpIntZaziszlugirfp << 64;
+     fpIntZaziszlugirfp = 0x5577737429679036;
+
+     _Complex long double * fpFloatIrwlzglwed = 3878151789.988004017;
+     _Complex long double * fpFloatHhyjeeohgnerv = 10.745834759950897994;
+     unsigned long long fpIntIvfzglggniy = 17840965526490475249;
 
      // bigcall(1, 2, 3, 4, 5, bigthing);
-     Function(fpIntDynndmnzxxrnbspo, fpFloatLqzfsalachbvn, fpIntRhurjehmkggbzpfjb, fpIntDcnyrtzxxv, fpIntXipsxerugx);
+     Function(fpIntOnnjnhtahwkfzet, fpFloatEsybudtnmugtrh, fpIntZaziszlugirfp, fpFloatIrwlzglwed, fpFloatHhyjeeohgnerv, fpIntIvfzglggniy);
 }
 ```
 
@@ -100,6 +104,13 @@ examples/cpp/simple/1/
 └── Makefile
 
 0 directories, 5 files
+```
+
+You can also override the render type. For example, the codegen.yaml use in the example above has type "random:1", which says
+to generate one random subfolder. Here is how to change that:
+
+```bash
+$ go run main.go gen examples/cpp/simple/codegen.yaml --outdir test/ --render-type random:5
 ```
 
 ### Writing a Template
@@ -201,6 +212,12 @@ originally produce for testing cases:
 
 # Let's have up to 10 parameters, so nCr(20, 10) = 184756
 ```
+
+## TODO
+
+ - I'm not sure how _Complex works (need help initializing them)
+ - need to be able to print an int128 without an error
+ - double pointers seem to give me trouble (need help here too)
 
 ### License
 

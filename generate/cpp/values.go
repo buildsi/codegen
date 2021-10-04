@@ -21,7 +21,7 @@ func GetIntegralValue(integralType string, isSigned bool, name string) string {
 		return getIntValue(isSigned)
 	case "long long":
 		return getLongLong(isSigned)
-	case "size_t":
+	case "std::size_t":
 		return getSizeTValue()
 
 	// This is multiple lines
@@ -129,7 +129,7 @@ func getLongLong(isSigned bool) string {
 
 // size_t on 64 bit will be 64 bit unsigned integer
 func getSizeTValue() string {
-	return string(utils.RandomInt(65535))
+	return fmt.Sprintf("%d", utils.RandomInt(65535))
 }
 
 // get an int128 value
@@ -146,6 +146,6 @@ func getInt128Value(name string) string {
 
 	result := "\n     " + name + " = " + firstPart + ";\n"
 	result += "     " + name + " << 64;\n"
-	result += "     " + name + " = " + secondPart + ";\n"
+	result += "     " + name + " = " + secondPart + ";"
 	return result
 }

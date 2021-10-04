@@ -14,7 +14,7 @@ import (
 	"text/template"
 )
 
-func Generate(conf config.Conf, outdir string) {
+func Generate(conf config.Conf, outdir string, renderType string) {
 
 	// Ensure that required files exist, and update to absolute path
 	for _, file := range conf.Files {
@@ -24,7 +24,10 @@ func Generate(conf config.Conf, outdir string) {
 	}
 
 	// Currently only supported is random
-	parts := strings.SplitN(conf.Type, ":", 2)
+	if renderType == "" {
+		renderType = conf.Type
+	}
+	parts := strings.SplitN(renderType, ":", 2)
 
 	// Number of generations to do
 	num := uint64(1)

@@ -12,7 +12,8 @@ type GenArgs struct {
 	ConfigFile []string `zero:"true" desc:"A codegen.yaml to parse"`
 }
 type GenFlags struct {
-	OutDir string `long:"outdir" desc:"Output directory to write files"`
+	OutDir         string `long:"outdir" desc:"Output directory to write files"`
+	ConfRenderType string `long:"render-type" desc:"Override a render type (e.g., random:5)"`
 }
 
 // Parser looks at symbols and ABI in Go
@@ -38,5 +39,5 @@ func RunGen(r *cmd.Root, c *cmd.Sub) {
 	if len(args.ConfigFile) == 0 {
 		args.ConfigFile = []string{filepath.Join(utils.GetPwd(), "codegen.yaml")}
 	}
-	generate.Generate(args.ConfigFile[0], flags.OutDir)
+	generate.Generate(args.ConfigFile[0], flags.OutDir, flags.ConfRenderType)
 }
