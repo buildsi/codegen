@@ -10,7 +10,7 @@ var templateHelpers template.FuncMap = map[string]interface{}{
 	"AsFormalParams": func(f Function) string {
 		render := ""
 		for i, param := range f.FormalParams {
-			render += param.Declaration(false)
+			render += param.DeclareFormalParam()
 			if i != len(f.FormalParams)-1 {
 				render += ", "
 			}
@@ -33,9 +33,20 @@ var templateHelpers template.FuncMap = map[string]interface{}{
 	"DeclareArgs": func(f Function) string {
 		render := ""
 		for i, param := range f.FormalParams {
-			render += "     " + param.Declaration(true)
+			render += "     " + param.DeclareValue() + ";"
 			if i != len(f.FormalParams)-1 {
 				render += "\n"
+			}
+		}
+		return render
+	},
+
+	// DeclareStructs declares each structure
+	"DeclareStructs": func(f Function) string {
+		render := ""
+		for _, param := range f.FormalParams {
+			if param.GetRawType() == "struct" {
+				render += "     " + param.Declaration() + ";"
 			}
 		}
 		return render
