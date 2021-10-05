@@ -15,10 +15,7 @@ type FloatFormalParam struct {
 
 // Declaration of a formal param
 func (p FloatFormalParam) DeclareFormalParam() string {
-	if p.IsPointer {
-		return p.Type + " * " + p.Name
-	}
-	return p.Type + " " + p.GetName()
+	return p.Type + " " + p.Reference()
 }
 
 // DeclareValues includes the value
@@ -29,8 +26,11 @@ func (p FloatFormalParam) DeclareValue() string {
 // Declaration of a float
 func (p FloatFormalParam) Declaration() string {
 	// This is a declaration for formal params (we need the * for pointer)
-	return p.Type + " " + p.GetName()
+	return p.Type + " " + p.Reference()
 }
+
+// TODO the above returns a & but for struct we don't want that?
+// also look up ow to define struct with pointer...
 
 // Reference of an integral formal param
 func (p FloatFormalParam) Reference() string {
@@ -71,7 +71,7 @@ func (p FloatFormalParam) GetValue() string {
 // GetName returns the name
 func (p FloatFormalParam) GetName() string {
 	if p.IsPointer {
-		return "&" + p.Name
+		return "*" + p.Name
 	}
 	return p.Name
 }
@@ -83,7 +83,6 @@ func (p FloatFormalParam) GetFieldName() string {
 
 // Print prints an float formal param
 func (p FloatFormalParam) Print() string {
-	name := p.GetName()
 	// TODO we will want more custom formatting based on the type here
-	return "std::cout << " + name + " << std::endl;"
+	return "std::cout << \"" + p.Name + " \" << " + p.Reference() + " << std::endl;"
 }

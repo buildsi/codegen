@@ -19,6 +19,7 @@ func (p StructureParam) Declaration() string {
 
 	result := "\nstruct STRUCT" + p.Name + " {\n"
 
+	// TODO Declaration cannot have & - need different func
 	for _, field := range p.Fields {
 		result = result + "   " + field.Declaration() + " = " + field.GetValue() + ";\n"
 	}
@@ -44,7 +45,7 @@ func (p StructureParam) GetValue() string {
 // GetName returns the name
 func (p StructureParam) GetName() string {
 	if p.IsPointer {
-		return "&" + p.Name
+		return "* " + p.Name
 	}
 	return p.Name
 }
@@ -78,8 +79,12 @@ func (p StructureParam) Reference() string {
 // Print a general param
 func (p StructureParam) Print() string {
 	result := ""
+	sep := "."
+	if p.IsPointer {
+		sep = "->"
+	}
 	for _, field := range p.Fields {
-		result += "std::cout << " + p.Name + "." + field.GetFieldName() + " << std::endl;\n"
+		result += "    std::cout << \"" + p.Name + "\"<< " + p.Name + sep + field.GetFieldName() + " << std::endl;\n"
 	}
 	return result
 }

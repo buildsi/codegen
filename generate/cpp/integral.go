@@ -1,9 +1,9 @@
 package cpp
 
 // INTEGRAL Possible integral types
-func GetIntegralTypes(includeSizeT bool) []string {
-	if !includeSizeT {
-		return []string{"char", "short", "int", "long", "long long", "__int128"}
+func GetIntegralTypes(withinStruct bool) []string {
+	if withinStruct {
+		return []string{"char", "short", "int", "long", "long long"}
 	}
 	return []string{"char", "short", "int", "std::size_t", "long", "long long", "__int128"}
 }
@@ -30,7 +30,7 @@ func (p IntegralFormalParam) DeclareValue() string {
 	var result string
 	if p.GetType() == "__int128" {
 		result = p.Prefix() + p.GetType() + " " + p.Name + ";"
-		result += p.Value
+		result += p.GetValue()
 		return result
 	}
 	return p.Prefix() + p.Type + " " + p.Name + " = " + p.Value
@@ -47,16 +47,13 @@ func (p IntegralFormalParam) Declaration() string {
 
 // GetValue returns the string representation of the value
 func (p IntegralFormalParam) GetValue() string {
-	if p.Type == "__int128" {
-		return p.GetName()
-	}
 	return p.Value
 }
 
 // GetName returns the string representation of the value
 func (p IntegralFormalParam) GetName() string {
 	if p.IsPointer {
-		return "&" + p.Name
+		return "* " + p.Name
 	}
 	return p.Name
 }
@@ -104,12 +101,10 @@ func (p IntegralFormalParam) GetRawType() string {
 
 // Print prints an integral formal param
 func (p IntegralFormalParam) Print() string {
-	name := p.GetName()
-
 	// TODO not sure how to do this one
 	if p.Type == "__int128" {
 		return ""
 	}
 	// TODO we will want custom printing based on the type here
-	return "std::cout <<  " + name + " << std::endl;"
+	return "std::cout << \"" + p.Name + " \" << " + p.Reference() + " << std::endl;"
 }

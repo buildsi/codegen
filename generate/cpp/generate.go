@@ -118,13 +118,13 @@ func WriteTemplate(path string, t *template.Template, funcs *map[string]Function
 func GenerateFunction(name string, entry config.Render) Function {
 
 	function := Function{Name: name}
-	params := GenerateFormalParams(entry, 0, true)
+	params := GenerateFormalParams(entry, 0, false)
 	function.FormalParams = params
 	return function
 }
 
 // Generate formal params, either for a function or structure
-func GenerateFormalParams(entry config.Render, nestingCount int, includeSizeT bool) []FormalParam {
+func GenerateFormalParams(entry config.Render, nestingCount int, withinStruct bool) []FormalParam {
 
 	params := []FormalParam{}
 
@@ -140,13 +140,13 @@ func GenerateFormalParams(entry config.Render, nestingCount int, includeSizeT bo
 		num = utils.RandomIntRange(entry.Parameters.Min, entry.Parameters.Max)
 	}
 	for i := 0; i < num; i++ {
-		params = append(params, NewFormalParam(entry, nestingCount, includeSizeT))
+		params = append(params, NewFormalParam(entry, nestingCount, withinStruct))
 	}
 	return params
 }
 
 // Functions to create new Formal Parameters (all random)
-func NewFormalParam(entry config.Render, nestingCount int, includeSizeT bool) FormalParam {
+func NewFormalParam(entry config.Render, nestingCount int, withinStruct bool) FormalParam {
 
 	// Only allow 1 level of structs (and make float, integral more likely)
 	choices := []string{"integral", "float", "struct", "integral", "float"}
@@ -156,13 +156,13 @@ func NewFormalParam(entry config.Render, nestingCount int, includeSizeT bool) Fo
 
 	switch utils.RandomChoice(choices) {
 	case "integral":
-		return NewIntegral(includeSizeT)
+		return NewIntegral(withinStruct)
 	case "float":
 		return NewFloat()
 	case "struct":
 		return NewStruct(entry, nestingCount)
 	}
-	return NewIntegral(includeSizeT)
+	return NewIntegral(withinStruct)
 }
 
 // NewStruct returns a new struct type, which also includes its own set of fields
@@ -181,11 +181,11 @@ func NewStruct(entry config.Render, nestingCount int) FormalParam {
 }
 
 // NewIntegral returns a new integral type
-func NewIntegral(includeSizeT bool) FormalParam {
+func NewIntegral(withinStruct bool) FormalParam {
 
 	// Get the type beforehand to derive a random value for it
 	name := "fpInt" + strings.Title(utils.RandomName())
-	integralType := utils.RandomChoice(GetIntegralTypes(includeSizeT))
+	integralType := utils.RandomChoice(GetIntegralTypes(withinStruct))
 	isSigned := utils.RandomBool()
 	value := GetIntegralValue(integralType, isSigned, name)
 
@@ -208,6 +208,6 @@ func NewFloat() FormalParam {
 		Type:      floatType,
 		Value:     value,
 		IsComplex: isComplex,
-		IsPointer: utils.RandomBool(),
+		IsPointer: false,
 	}
 }

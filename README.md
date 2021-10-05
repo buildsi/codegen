@@ -217,8 +217,8 @@ originally produce for testing cases:
 ## TODO
 
  - I'm not sure how _Complex works (need help initializing them)
- - need to be able to print an int128 without an error
- - double pointers seem to give me trouble (need help here too)
+ - pointers on type double seem to give me trouble (need help here too)
+ - how to include int128/pointers in structs
 
 ### License
 
