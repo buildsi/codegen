@@ -6,11 +6,11 @@ func GetFloatTypes() []string {
 
 // Integral Types
 type FloatFormalParam struct {
-	Name      string
-	Type      string
-	IsComplex bool
-	IsPointer bool
-	Value     string
+	Name      string `json:"name"`
+	Type      string `json:"type"`
+	IsComplex bool   `json:"is_complex"`
+	IsPointer bool   `json:"is_pointer"`
+	Value     string `json:"value"`
 }
 
 // Declaration of a formal param

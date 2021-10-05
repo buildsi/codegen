@@ -2,7 +2,9 @@ package cpp
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -90,11 +92,16 @@ func GenerateCppRandom(conf config.Conf, num int, outdir string) {
 				// To prevent from printint to the screen, t.Execute(ioutil.Discard, funcs)
 			}
 		}
+
 		// Copy the remaining files there
 		if outdir != "" {
 			for _, path := range paths {
 				utils.CopyFile(filepath.Join(conf.Root, path), filepath.Join(outsubdir, path))
 			}
+
+			// Save json for functions
+			output, _ := json.MarshalIndent(funcs, "", " ")
+			_ = ioutil.WriteFile(filepath.Join(outsubdir, "codegen.json"), output, 0644)
 
 			// If not writing to file, only allow printing one
 		} else {

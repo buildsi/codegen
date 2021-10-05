@@ -17,6 +17,6 @@ type FormalParam interface {
 
 // A Function holds a name and one or more formal params
 type Function struct {
-	Name         string
-	FormalParams []FormalParam
+	Name         string        `json:"name"`
+	FormalParams []FormalParam `json:"parameters,omitempty"`
 }

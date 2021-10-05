@@ -113,6 +113,32 @@ to generate one random subfolder. Here is how to change that:
 $ go run main.go gen examples/cpp/simple/codegen.yaml --outdir test/ --render-type random:5
 ```
 
+Finally, in each subfolder we save a codegen.json, which is the "ground truth" of the content that was generated:
+
+```json
+{
+ "Function": {
+  "name": "Function",
+  "parameters": [
+   {
+    "name": "fpIntDvtvhdxzlqqyhtfxqs",
+    "type": "long long",
+    "is_signed": false,
+    "is_pointer": false,
+    "value": "12893673844757825883"
+   },
+   {
+    "name": "fpIntVsdvmhwkyypr",
+    "type": "int",
+    "is_signed": false,
+    "is_pointer": true,
+    "value": "857754104"
+   }
+  ]
+ }
+}
+```
+
 ### Writing a Template
 
 A template is a folder with a codegen.yaml file and one or more files that are to be filled in (templates).
@@ -127,6 +153,7 @@ As an example, let's look at [examples/cpp/simple](examples/cpp/simple). For any
 if you use any of the printing functions.
 
 #### codegen.yaml
+
 The codegen.yaml file is going to tell us the following:
 
 ```yaml

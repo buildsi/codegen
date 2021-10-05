@@ -10,11 +10,11 @@ func GetIntegralTypes(withinStruct bool) []string {
 
 // Integral Types
 type IntegralFormalParam struct {
-	Name      string
-	Type      string
-	IsSigned  bool
-	IsPointer bool
-	Value     string // since we are printing to a template, this can be a string
+	Name      string `json:"name"`
+	Type      string `json:"type"`
+	IsSigned  bool   `json:"is_signed"`
+	IsPointer bool   `json:"is_pointer"`
+	Value     string `json:"value"`
 }
 
 // Declaration of a formal param
