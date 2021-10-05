@@ -3,9 +3,9 @@
 #include <iostream>
 #include "foo.h"
 
-void Function(unsigned  long long fpIntUhasbzebyxv, double fpFloatKmeaonqssokgultzsf) {
+void Function(unsigned  long long fpIntDvtvhdxzlqqyhtfxqs, unsigned  int * fpIntVsdvmhwkyypr) {
 
-     std::cout << "fpIntUhasbzebyxv " << fpIntUhasbzebyxv << std::endl;
-     std::cout << "fpFloatKmeaonqssokgultzsf " << fpFloatKmeaonqssokgultzsf << std::endl;
+     std::cout << "fpIntDvtvhdxzlqqyhtfxqs " << fpIntDvtvhdxzlqqyhtfxqs << std::endl;
+     std::cout << "fpIntVsdvmhwkyypr " << &fpIntVsdvmhwkyypr << std::endl;
 
 }

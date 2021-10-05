@@ -2,11 +2,11 @@ package cpp
 
 // Structure Type
 type StructureParam struct {
-	Type      string
-	Value     string
-	Name      string
-	IsPointer bool
-	Fields    []FormalParam
+	Type      string        `json:"type"`
+	Value     string        `json:"value"`
+	Name      string        `json:"name"`
+	IsPointer bool          `json:"is_pointer"`
+	Fields    []FormalParam `json:"fields"`
 }
 
 // Declaration of a structure
