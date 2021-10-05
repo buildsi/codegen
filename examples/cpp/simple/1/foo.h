@@ -2,4 +2,7 @@
 
 #include <cstdint>
 
-void Function(unsigned long long fpIntLnxssnwknplnukqo);
+// Structs used in the function should be declared first
+ 
+
+void Function(unsigned  long long fpIntUhasbzebyxv, double fpFloatKmeaonqssokgultzsf);

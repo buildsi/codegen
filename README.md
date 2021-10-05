@@ -189,6 +189,7 @@ to a function, we use a pipe. Thus, you need to know the functions that are supp
 |function| DeclareArgs | Make multi-line declarations of parameters to pass into the function |
 |function| GetFunctionName | Just print the name of the function |
 |function| PrintArgs | just do a println of each named param, usually for debugging |
+|function| DeclareStructs | write declarations for structures |
 
 You'll also notice there is a Makefile in the folder - likely when we generate many of these
 and save the renderings somewhere, we will copy over all the content here (including the Makefile, which
@@ -216,8 +217,8 @@ originally produce for testing cases:
 ## TODO
 
  - I'm not sure how _Complex works (need help initializing them)
- - need to be able to print an int128 without an error
- - double pointers seem to give me trouble (need help here too)
+ - pointers on type double seem to give me trouble (need help here too)
+ - how to include int128/pointers in structs
 
 ### License
 

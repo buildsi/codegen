@@ -4,8 +4,9 @@
 int main() {
 
      // Initialize each formal param
-     unsigned long long fpIntLnxssnwknplnukqo = 13432713847415853222;
+     unsigned long long fpIntUhasbzebyxv = 9850645379854796567;
+     double fpFloatKmeaonqssokgultzsf = 14059.994265585735417;
 
      // bigcall(1, 2, 3, 4, 5, bigthing);
-     Function(fpIntLnxssnwknplnukqo);
+     Function(fpIntUhasbzebyxv, fpFloatKmeaonqssokgultzsf);
 }
