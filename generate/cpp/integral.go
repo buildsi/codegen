@@ -1,11 +1,15 @@
 package cpp
 
-// INTEGRAL Possible integral types
+import (
+	"github.com/buildsi/codegen/utils"
+)
+
+// INTEGRAL Possible integral types NOTE __int128 removed for now, need help to define!
 func GetIntegralTypes(withinStruct bool) []string {
 	if withinStruct {
-		return []string{"char", "short", "int", "long", "long long"}
+		return []string{"char", "short", "int", "long", "long long", "std::string", "bool"}
 	}
-	return []string{"char", "short", "int", "std::size_t", "long", "long long", "__int128"}
+	return []string{"char", "short", "int", "std::size_t", "long", "long long", "std::string", "bool"}
 }
 
 // Integral Types
@@ -77,8 +81,11 @@ func (p IntegralFormalParam) Reference() string {
 // Prefix of an integral formal param
 func (p IntegralFormalParam) Prefix() string {
 
-	// size T always unsigned
-	if p.Type == "std::size_t" {
+	// These are integral types that are not signed/unsigned
+	skips := []string{"std::string", "std::size_t", "bool"}
+
+	// size T, string, and bool always unsigned
+	if utils.IncludesString(p.Type, skips) {
 		return ""
 	}
 	if p.IsSigned {
@@ -106,5 +113,5 @@ func (p IntegralFormalParam) Print() string {
 		return ""
 	}
 	// TODO we will want custom printing based on the type here
-	return "std::cout << \"" + p.Name + " \" << " + p.Reference() + " << std::endl;"
+	return "std::cout << \"" + p.Name + "\" << " + p.Reference() + " << std::endl;"
 }

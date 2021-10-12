@@ -13,6 +13,10 @@ func GetIntegralValue(integralType string, isSigned bool, name string) string {
 	switch integralType {
 	case "int":
 		return getIntValue(isSigned)
+	case "bool":
+		return getBoolValue()
+	case "std::string":
+		return getStringValue()
 	case "char":
 		return getCharValue()
 	case "short":
@@ -130,6 +134,16 @@ func getLongLong(isSigned bool) string {
 // size_t on 64 bit will be 64 bit unsigned integer
 func getSizeTValue() string {
 	return fmt.Sprintf("%d", utils.RandomInt(65535))
+}
+
+// Get a boolean value
+func getBoolValue() string {
+	return fmt.Sprintf("%v", utils.RandomBool())
+}
+
+// Get a string value
+func getStringValue() string {
+	return "\"" + utils.RandomName() + "\""
 }
 
 // get an int128 value

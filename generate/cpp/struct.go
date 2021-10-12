@@ -84,7 +84,7 @@ func (p StructureParam) Print() string {
 		sep = "->"
 	}
 	for _, field := range p.Fields {
-		result += "    std::cout << \"" + p.Name + "\"<< " + p.Name + sep + field.GetFieldName() + " << std::endl;\n"
+		result += "    std::cout << \"" + p.Name + "\" << " + p.Name + sep + field.GetFieldName() + " << std::endl;\n"
 	}
 	return result
 }

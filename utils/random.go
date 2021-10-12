@@ -2,6 +2,7 @@ package utils
 
 import (
 	"math/rand"
+	"strings"
 	"time"
 )
 
@@ -79,5 +80,5 @@ func RandomName() string {
 	for i := range result {
 		result[i] = charset[seed.Intn(len(charset))]
 	}
-	return string(result)
+	return strings.Trim(string(result), " ")
 }
