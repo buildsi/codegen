@@ -1,5 +1,6 @@
 #include "foo.h"
 #include <iostream>
+#include <string>
 
 int main() {
 
