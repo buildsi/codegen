@@ -27,6 +27,7 @@ type Rendering struct {
 // A render is a specific type and parameter settings for a thing like a function
 type Render struct {
 	Type       string            `yaml:"type,omitempty"`
+	Numeric    bool              `yaml:"numeric,omitempty"`
 	Parameters ParameterSettings `yaml:"parameters,omitempty"`
 }
 

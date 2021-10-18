@@ -57,6 +57,29 @@ var templateHelpers template.FuncMap = map[string]interface{}{
 		return f.Name
 	},
 
+	// GetReturnType returns type of first argument
+	"GetReturnType": func(f Function) string {
+		if len(f.FormalParams) == 0 {
+			return "void"
+		}
+		return f.FormalParams[0].GetType()
+	},
+
+	// AddArgs returns a string to add all params
+	"AddArgs": func(f Function) string {
+		if len(f.FormalParams) == 0 {
+			return "0;"
+		}
+		add := ""
+		for i, param := range f.FormalParams {
+			if i != 0 {
+				add += " + "
+			}
+			add += param.GetName()
+		}
+		return add + ";"
+	},
+
 	// CallFunction calls the function with the args
 	"CallFunction": func(f Function) string {
 		render := f.Name + "("

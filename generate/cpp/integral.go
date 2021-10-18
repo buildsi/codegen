@@ -12,6 +12,11 @@ func GetIntegralTypes(withinStruct bool) []string {
 	return []string{"char", "short", "int", "std::size_t", "long", "long long", "std::string", "bool"}
 }
 
+// Integral numeric types
+func GetIntegralNumericTypes() []string {
+	return []string{"short", "int", "long", "long long"}
+}
+
 // Integral Types
 type IntegralFormalParam struct {
 	Name      string `json:"name"`
