@@ -1,0 +1,82 @@
+{
+ "FunctionA": {
+  "name": "FunctionA",
+  "parameters": [
+   {
+    "name": "fpIntMdoymekwfuhqasj",
+    "type": "short",
+    "is_signed": false,
+    "is_pointer": false,
+    "value": "53290"
+   },
+   {
+    "name": "fpIntHvldrqsckfpkvja",
+    "type": "long long",
+    "is_signed": false,
+    "is_pointer": true,
+    "value": "2843794259474676288"
+   },
+   {
+    "name": "fpIntGijzuxraxgsl",
+    "type": "long",
+    "is_signed": true,
+    "is_pointer": true,
+    "value": "123989677"
+   },
+   {
+    "name": "fpIntQldleonbls",
+    "type": "int",
+    "is_signed": true,
+    "is_pointer": true,
+    "value": "-1961173517"
+   },
+   {
+    "name": "fpIntTcbhxvmjonk",
+    "type": "long long",
+    "is_signed": false,
+    "is_pointer": false,
+    "value": "11824940654566346566"
+   }
+  ]
+ },
+ "FunctionB": {
+  "name": "FunctionB",
+  "parameters": [
+   {
+    "name": "fpFloatJliubjziogbbie",
+    "type": "double",
+    "is_complex": true,
+    "is_pointer": false,
+    "value": "249704582471143.7292"
+   },
+   {
+    "name": "fpIntGdhsbkefpdj",
+    "type": "long long",
+    "is_signed": true,
+    "is_pointer": true,
+    "value": "-7443375618086199055"
+   },
+   {
+    "name": "fpIntWporjcpqftjdeifu",
+    "type": "long",
+    "is_signed": true,
+    "is_pointer": false,
+    "value": "-1404225978"
+   },
+   {
+    "name": "fpFloatVarypswboqvlmbzxb",
+    "type": "double",
+    "is_complex": true,
+    "is_pointer": false,
+    "value": "114527307.14823626458"
+   },
+   {
+    "name": "fpIntNczriyxwhxtxiyweeq",
+    "type": "long long",
+    "is_signed": true,
+    "is_pointer": false,
+    "value": "-2213813445443352312"
+   }
+  ]
+ }
+}

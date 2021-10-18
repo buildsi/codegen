@@ -161,7 +161,14 @@ func NewFormalParam(entry config.Render, nestingCount int, withinStruct bool) Fo
 		choices = []string{"integral", "float"}
 	}
 
+	// If we only want numeric
+	if entry.Numeric {
+		choices = []string{"numeric", "float"}
+	}
+
 	switch utils.RandomChoice(choices) {
+	case "numeric":
+		return NewIntegralNumeric()
 	case "integral":
 		return NewIntegral(withinStruct)
 	case "float":
@@ -193,6 +200,22 @@ func NewIntegral(withinStruct bool) FormalParam {
 	// Get the type beforehand to derive a random value for it
 	name := "fpInt" + strings.Title(utils.RandomName())
 	integralType := utils.RandomChoice(GetIntegralTypes(withinStruct))
+	isSigned := utils.RandomBool()
+	value := GetIntegralValue(integralType, isSigned, name)
+
+	return IntegralFormalParam{Name: name,
+		Type:      integralType,
+		IsSigned:  isSigned,
+		Value:     value,
+		IsPointer: utils.RandomBool()}
+}
+
+// NewIntegralNumeric returns a new integral numeric type
+func NewIntegralNumeric() FormalParam {
+
+	// Get the type beforehand to derive a random value for it
+	name := "fpInt" + strings.Title(utils.RandomName())
+	integralType := utils.RandomChoice(GetIntegralNumericTypes())
 	isSigned := utils.RandomBool()
 	value := GetIntegralValue(integralType, isSigned, name)
 

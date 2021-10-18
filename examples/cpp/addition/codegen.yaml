@@ -1,0 +1,28 @@
+generate:
+
+  # Currently only cpp is supported!
+  language: "cpp"
+
+  # Files to parse during rendering
+  files:
+    - foo.c
+    - main.c
+    - foo.h
+
+  # Generation type can be random with a number, or (something more controlled without replacement?) e.g., "random:100"
+  type: "random"
+      
+  # Functions and other types to generate for the templates
+  render:
+    FunctionA:
+      type: "function"
+      numeric: true
+      parameters:
+        min: 1
+        max: 10
+    FunctionB:
+      type: "function"
+      numeric: true
+      parameters:
+        min: 1
+        max: 10
