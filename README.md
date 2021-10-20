@@ -147,9 +147,6 @@ This example generates only numeric types, and does addition with a return value
 $ go run main.go gen examples/cpp/addition/codegen.yaml 
 ```
 
-
-
-
 ### Writing a Template
 
 A template is a folder with a codegen.yaml file and one or more files that are to be filled in (templates).

@@ -45,7 +45,7 @@ var templateHelpers template.FuncMap = map[string]interface{}{
 	"DeclareStructs": func(f Function) string {
 		render := ""
 		for _, param := range f.FormalParams {
-			if param.GetRawType() == "struct" {
+			if param.GetRawType() == "struct" || param.GetRawType() == "union" {
 				render += "     " + param.Declaration() + ";"
 			}
 		}

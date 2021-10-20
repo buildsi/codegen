@@ -125,13 +125,13 @@ func WriteTemplate(path string, t *template.Template, funcs *map[string]Function
 func GenerateFunction(name string, entry config.Render) Function {
 
 	function := Function{Name: name}
-	params := GenerateFormalParams(entry, 0, false)
+	params := GenerateFormalParams(entry, 0, false, false)
 	function.FormalParams = params
 	return function
 }
 
 // Generate formal params, either for a function or structure
-func GenerateFormalParams(entry config.Render, nestingCount int, withinStruct bool) []FormalParam {
+func GenerateFormalParams(entry config.Render, nestingCount int, withinStruct bool, withinUnion bool) []FormalParam {
 
 	params := []FormalParam{}
 
@@ -147,13 +147,13 @@ func GenerateFormalParams(entry config.Render, nestingCount int, withinStruct bo
 		num = utils.RandomIntRange(entry.Parameters.Min, entry.Parameters.Max)
 	}
 	for i := 0; i < num; i++ {
-		params = append(params, NewFormalParam(entry, nestingCount, withinStruct))
+		params = append(params, NewFormalParam(entry, nestingCount, withinStruct, withinUnion))
 	}
 	return params
 }
 
 // Functions to create new Formal Parameters (all random)
-func NewFormalParam(entry config.Render, nestingCount int, withinStruct bool) FormalParam {
+func NewFormalParam(entry config.Render, nestingCount int, withinStruct bool, withinUnion bool) FormalParam {
 
 	// Only allow 1 level of structs (and make float, integral more likely)
 	choices := []string{"integral", "float", "struct", "integral", "float"}
@@ -170,36 +170,43 @@ func NewFormalParam(entry config.Render, nestingCount int, withinStruct bool) Fo
 	case "numeric":
 		return NewIntegralNumeric()
 	case "integral":
-		return NewIntegral(withinStruct)
+		return NewIntegral(withinStruct, withinUnion)
 	case "float":
 		return NewFloat()
 	case "struct":
 		return NewStruct(entry, nestingCount)
 	}
-	return NewIntegral(withinStruct)
+	return NewIntegral(withinStruct, withinUnion)
 }
 
 // NewStruct returns a new struct type, which also includes its own set of fields
 func NewStruct(entry config.Render, nestingCount int) FormalParam {
 
+	isUnion := utils.RandomBool()
+	typeName := "struct"
+	if isUnion {
+		typeName = "union"
+	}
+
 	// A struct has its own list of fields
 	nestingCount += 1
-	fields := GenerateFormalParams(entry, nestingCount, false)
+	fields := GenerateFormalParams(entry, nestingCount, false, isUnion)
 
 	// Get the type beforehand to derive a random value for it
-	name := "struct" + strings.Title(utils.RandomName())
+	name := typeName + strings.Title(utils.RandomName())
 	return StructureParam{Name: name,
-		Type:      "struct",
+		Type:      typeName,
+		IsUnion:   isUnion,
 		IsPointer: utils.RandomBool(),
 		Fields:    fields}
 }
 
 // NewIntegral returns a new integral type
-func NewIntegral(withinStruct bool) FormalParam {
+func NewIntegral(withinStruct bool, withinUnion bool) FormalParam {
 
 	// Get the type beforehand to derive a random value for it
 	name := "fpInt" + strings.Title(utils.RandomName())
-	integralType := utils.RandomChoice(GetIntegralTypes(withinStruct))
+	integralType := utils.RandomChoice(GetIntegralTypes(withinStruct, withinUnion))
 	isSigned := utils.RandomBool()
 	value := GetIntegralValue(integralType, isSigned, name)
 
