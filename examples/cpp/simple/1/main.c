@@ -5,14 +5,13 @@
 int main() {
 
      // Initialize each formal param
-     std::string fpIntNirpvxxjljseoeq = "rijpkyzbtlx";
-     long double fpFloatPfsdlnaiffqe = 27105.92540864471443;
-     signed short fpIntNauekcseuyuls = 21157;
-     STRUCTstructHsqlmtcfjxgalrdce structHsqlmtcfjxgalrdce;;
-     double fpFloatWbxnrgynsukt = 35637.78088195861942;
-     std::size_t fpIntZitcfqtgcwgg = 27173;
-     long double fpFloatCpeqyqqtqlwrpp = 13697830667.942846202;
+     STRUCTstructEjknkgadfa structEjknkgadfa;;
+     signed long fpIntJpqjsedhnpvnvtjfxm = -1195503477;
+     float fpFloatOkxtgxtfbgmvoezfcmz = 2848223.570775133493;
+     signed long fpIntYoiwjlejeux = -1206782476;
+     float fpFloatYtpwgmomqgnq = 124838372252039654.38;
+     UNIONunionGplgcipqwtlgfz unionGplgcipqwtlgfz;;
 
      // bigcall(1, 2, 3, 4, 5, bigthing);
-     Function(fpIntNirpvxxjljseoeq, fpFloatPfsdlnaiffqe, fpIntNauekcseuyuls, &structHsqlmtcfjxgalrdce, fpFloatWbxnrgynsukt, &fpIntZitcfqtgcwgg, fpFloatCpeqyqqtqlwrpp);
+     Function(structEjknkgadfa, &fpIntJpqjsedhnpvnvtjfxm, fpFloatOkxtgxtfbgmvoezfcmz, fpIntYoiwjlejeux, fpFloatYtpwgmomqgnq, &unionGplgcipqwtlgfz);
 }

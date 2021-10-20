@@ -1,25 +1,40 @@
 package cpp
 
-// Structure Type
+import (
+	"github.com/buildsi/codegen/utils"
+	"strings"
+)
+
+// Structure or Union Type
 type StructureParam struct {
 	Type      string        `json:"type"`
 	Value     string        `json:"value"`
 	Name      string        `json:"name"`
 	IsPointer bool          `json:"is_pointer"`
 	Fields    []FormalParam `json:"fields"`
+	IsUnion   bool          `json:"is_union"`
 }
 
 // Declaration of a structure
 func (p StructureParam) DeclareValue() string {
-	return "STRUCT" + p.GetFieldName() + " " + p.GetFieldName() + ";"
+	prefix := "STRUCT"
+	if p.IsUnion {
+		prefix = "UNION"
+	}
+	return prefix + p.GetFieldName() + " " + p.GetFieldName() + ";"
 }
 
 // Declaration is for a separate declaration of just the type
 func (p StructureParam) Declaration() string {
+	if p.IsUnion {
+		return p.declarationUnion()
+	}
+	return p.declarationStruct()
+}
 
-	result := "\nstruct STRUCT" + p.Name + " {\n"
-
-	// TODO Declaration cannot have & - need different func
+func (p StructureParam) declarationStruct() string {
+	prefix := "STRUCT"
+	result := "\n" + strings.ToLower(prefix) + " " + prefix + p.Name + " {\n"
 	for _, field := range p.Fields {
 		result = result + "   " + field.Declaration() + " = " + field.GetValue() + ";\n"
 	}
@@ -27,9 +42,30 @@ func (p StructureParam) Declaration() string {
 	return result
 }
 
+func (p StructureParam) declarationUnion() string {
+	prefix := "UNION"
+	result := "\n" + strings.ToLower(prefix) + " " + prefix + p.Name + " {\n"
+
+	// Randomly choose just one to give a value to
+	idx := utils.RandomIntRange(0, len(p.Fields))
+	for i, field := range p.Fields {
+		if i == idx {
+			result = result + "   " + field.Declaration() + " = " + field.GetValue() + ";\n"
+		} else {
+			result = result + "   " + field.Declaration() + ";\n"
+		}
+	}
+	result += "}"
+	return result
+}
+
 // DeclareFormalParams just declares the type (and if a pointer)
 func (p StructureParam) DeclareFormalParam() string {
-	return "STRUCT" + p.GetFieldName() + " " + p.GetName()
+	prefix := "STRUCT"
+	if p.IsUnion {
+		prefix = "UNION"
+	}
+	return prefix + p.GetFieldName() + " " + p.GetName()
 }
 
 // Prefix of an structure formal param

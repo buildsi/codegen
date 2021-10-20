@@ -5,9 +5,11 @@ import (
 )
 
 // INTEGRAL Possible integral types NOTE __int128 removed for now, need help to define!
-func GetIntegralTypes(withinStruct bool) []string {
+func GetIntegralTypes(withinStruct bool, withinUnion bool) []string {
 	if withinStruct {
 		return []string{"char", "short", "int", "long", "long long", "std::string", "bool"}
+	} else if withinUnion {
+		return []string{"char", "short", "int", "long", "long long", "bool"}
 	}
 	return []string{"char", "short", "int", "std::size_t", "long", "long long", "std::string", "bool"}
 }
