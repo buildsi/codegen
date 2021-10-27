@@ -195,6 +195,42 @@ In the above, wherever we find reference to `{{ .Function }}` we will know it's 
 randomly generated from all the float and integral types that we understand. For each of the files in the listing there,
 they will be parsed and populated with this information. For some examples, let's look through at an example.
 
+As another example, if you want to limit to specific types, add a list of "types" to the function:
+
+```yaml
+# "Function" is the identifier for this specific function to use in the template, e.g., {{ .Function }}
+Function:
+  type: "function"
+  parameters:
+    min: 1
+    max: 10
+    types:
+      - int
+```
+
+Types supported are currently:
+
+ - char
+ - short
+ - int
+ - long
+ - long long
+ - std::string
+ - bool
+ - std::size_t
+
+Note that if you do numeric: true you'll get a subset of numeric types.
+
+```yaml
+# "Function" is the identifier for this specific function to use in the template, e.g., {{ .Function }}
+Function:
+  type: "function"
+  numeric: true
+  parameters:
+    min: 1
+    max: 10
+```
+
 #### main.c
 
 The template looks like this:
@@ -266,4 +302,3 @@ See LICENSE-MIT, LICENSE-APACHE, COPYRIGHT, and NOTICE for details.
 SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 LLNL-CODE-811652
-(base) vanessa@van

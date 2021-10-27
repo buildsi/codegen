@@ -157,18 +157,27 @@ func NewFormalParam(entry config.Render, nestingCount int, withinStruct bool, wi
 
 	// Only allow 1 level of structs (and make float, integral more likely)
 	choices := []string{"integral", "float", "struct", "integral", "float"}
-	if nestingCount > 0 {
-		choices = []string{"integral", "float"}
-	}
 
-	// If we only want numeric
-	if entry.Numeric {
-		choices = []string{"numeric", "float"}
+	// Case 1: a pre-defined set of allowed types
+	if len(entry.Parameters.Types) > 0 {
+		choices = entry.Parameters.Types
+
+	} else {
+		if nestingCount > 0 {
+			choices = []string{"integral", "float"}
+		}
+
+		// If we only want numeric
+		if entry.Numeric {
+			choices = []string{"numeric", "float"}
+		}
 	}
 
 	switch utils.RandomChoice(choices) {
 	case "numeric":
 		return NewIntegralNumeric()
+	case "int":
+		return NewInt()
 	case "integral":
 		return NewIntegral(withinStruct, withinUnion)
 	case "float":
@@ -199,6 +208,22 @@ func NewStruct(entry config.Render, nestingCount int) FormalParam {
 		IsUnion:   isUnion,
 		IsPointer: utils.RandomBool(),
 		Fields:    fields}
+}
+
+// NewInt returns a new int
+func NewInt() FormalParam {
+
+	// Get the type beforehand to derive a random value for it
+	name := "fpInt" + strings.Title(utils.RandomName())
+	integralType := "int"
+	isSigned := utils.RandomBool()
+	value := GetIntegralValue(integralType, isSigned, name)
+
+	return IntegralFormalParam{Name: name,
+		Type:      integralType,
+		IsSigned:  isSigned,
+		Value:     value,
+		IsPointer: utils.RandomBool()}
 }
 
 // NewIntegral returns a new integral type

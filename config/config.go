@@ -33,9 +33,10 @@ type Render struct {
 
 // A Parameter defines how the parameters should be generated
 type ParameterSettings struct {
-	Min   int `yaml:"min,omitempty"`
-	Max   int `yaml:"max,omitempty"`
-	Exact int `yaml:"exact,omitempty"`
+	Min   int      `yaml:"min,omitempty"`
+	Max   int      `yaml:"max,omitempty"`
+	Exact int      `yaml:"exact,omitempty"`
+	Types []string `yaml:"types,omitempty"`
 }
 
 // read the config and return a config type
