@@ -2,7 +2,6 @@ package generate
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 )
@@ -23,26 +22,18 @@ type Function struct {
 }
 
 // Load exported codegen.json into structure
-func Load(jsonFile string) {
+func Load(jsonFile string) map[string]Function {
 
 	content, err := ioutil.ReadFile(jsonFile)
 	if err != nil {
 		log.Printf("error reading %s #%v ", jsonFile, err)
 	}
 
-	// First unmarshall into generic structure
-	//	var data map[string]interface{}
 	funcs := map[string]Function{}
 	err = json.Unmarshal(content, &funcs)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v\n", err)
 	}
 
-	fmt.Println(funcs)
-	// Load generation settings
-	//	if item, ok := data["generate"]; ok {
-	//		c.Rendering = loadRendering(item)
-	//	}
-	//	return c
-
+	return funcs
 }
