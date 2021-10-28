@@ -173,23 +173,25 @@ func NewFormalParam(entry config.Render, nestingCount int, withinStruct bool, wi
 		}
 	}
 
+	usePointers := entry.Parameters.Pointers
+
 	switch utils.RandomChoice(choices) {
 	case "numeric":
-		return NewIntegralNumeric()
+		return NewIntegralNumeric(usePointers)
 	case "int":
-		return NewInt()
+		return NewInt(usePointers)
 	case "integral":
-		return NewIntegral(withinStruct, withinUnion)
+		return NewIntegral(withinStruct, withinUnion, usePointers)
 	case "float":
 		return NewFloat()
 	case "struct":
-		return NewStruct(entry, nestingCount)
+		return NewStruct(entry, nestingCount, usePointers)
 	}
-	return NewIntegral(withinStruct, withinUnion)
+	return NewIntegral(withinStruct, withinUnion, usePointers)
 }
 
 // NewStruct returns a new struct type, which also includes its own set of fields
-func NewStruct(entry config.Render, nestingCount int) FormalParam {
+func NewStruct(entry config.Render, nestingCount int, usePointers bool) FormalParam {
 
 	isUnion := utils.RandomBool()
 	typeName := "struct"
@@ -211,51 +213,60 @@ func NewStruct(entry config.Render, nestingCount int) FormalParam {
 }
 
 // NewInt returns a new int
-func NewInt() FormalParam {
+func NewInt(usePointers bool) FormalParam {
 
 	// Get the type beforehand to derive a random value for it
 	name := "fpInt" + strings.Title(utils.RandomName())
 	integralType := "int"
 	isSigned := utils.RandomBool()
 	value := GetIntegralValue(integralType, isSigned, name)
+	if usePointers {
+		usePointers = utils.RandomBool()
+	}
 
 	return IntegralFormalParam{Name: name,
 		Type:      integralType,
 		IsSigned:  isSigned,
 		Value:     value,
-		IsPointer: utils.RandomBool()}
+		IsPointer: usePointers}
 }
 
 // NewIntegral returns a new integral type
-func NewIntegral(withinStruct bool, withinUnion bool) FormalParam {
+func NewIntegral(withinStruct bool, withinUnion bool, usePointers bool) FormalParam {
 
 	// Get the type beforehand to derive a random value for it
 	name := "fpInt" + strings.Title(utils.RandomName())
 	integralType := utils.RandomChoice(GetIntegralTypes(withinStruct, withinUnion))
 	isSigned := utils.RandomBool()
 	value := GetIntegralValue(integralType, isSigned, name)
+	if usePointers {
+		usePointers = utils.RandomBool()
+	}
 
 	return IntegralFormalParam{Name: name,
 		Type:      integralType,
 		IsSigned:  isSigned,
 		Value:     value,
-		IsPointer: utils.RandomBool()}
+		IsPointer: usePointers}
 }
 
 // NewIntegralNumeric returns a new integral numeric type
-func NewIntegralNumeric() FormalParam {
+func NewIntegralNumeric(usePointers bool) FormalParam {
 
 	// Get the type beforehand to derive a random value for it
 	name := "fpInt" + strings.Title(utils.RandomName())
 	integralType := utils.RandomChoice(GetIntegralNumericTypes())
 	isSigned := utils.RandomBool()
 	value := GetIntegralValue(integralType, isSigned, name)
+	if usePointers {
+		usePointers = utils.RandomBool()
+	}
 
 	return IntegralFormalParam{Name: name,
 		Type:      integralType,
 		IsSigned:  isSigned,
 		Value:     value,
-		IsPointer: utils.RandomBool()}
+		IsPointer: usePointers}
 }
 
 func NewFloat() FormalParam {

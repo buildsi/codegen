@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"path/filepath"
@@ -33,10 +34,11 @@ type Render struct {
 
 // A Parameter defines how the parameters should be generated
 type ParameterSettings struct {
-	Min   int      `yaml:"min,omitempty"`
-	Max   int      `yaml:"max,omitempty"`
-	Exact int      `yaml:"exact,omitempty"`
-	Types []string `yaml:"types,omitempty"`
+	Min      int      `yaml:"min,omitempty"`
+	Max      int      `yaml:"max,omitempty"`
+	Exact    int      `yaml:"exact,omitempty"`
+	Pointers bool     `yaml:"pointers"`
+	Types    []string `yaml:"types,omitempty"`
 }
 
 // read the config and return a config type
@@ -64,9 +66,24 @@ func loadRendering(item interface{}) Rendering {
 	rendering := Rendering{}
 	mapstructure.Decode(item, &rendering)
 	settings := item.(map[string]interface{})["render"]
-	render := map[string]Render{}
-	mapstructure.Decode(settings, &render)
-	rendering.Renders = render
+	renders := map[string]Render{}
+	mapstructure.Decode(settings, &renders)
+	fmt.Println(renders)
+
+	// Default needs to be true
+	for key, render := range renders {
+
+		// yes, this is really ugly!
+		usePointer := settings.(map[string]interface{})[key].(map[string]interface{})["parameters"].(map[string]interface{})["pointers"]
+		if usePointer == nil {
+			render.Parameters.Pointers = true
+		} else {
+			render.Parameters.Pointers = usePointer.(bool)
+		}
+		fmt.Println(render)
+		renders[key] = render
+	}
+	rendering.Renders = renders
 	return rendering
 }
 
