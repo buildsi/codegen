@@ -112,6 +112,19 @@ func (p StructureParam) Reference() string {
 	return p.Name
 }
 
+// Assert a structure param
+func (p StructureParam) Assert() string {
+	result := ""
+	sep := "."
+	if p.IsPointer {
+		sep = "->"
+	}
+	for _, field := range p.Fields {
+		result += "    assert (" + p.GetName() + sep + field.GetFieldName() + " == " + field.GetValue() + ");\n"
+	}
+	return result
+}
+
 // Print a general param
 func (p StructureParam) Print() string {
 	result := ""

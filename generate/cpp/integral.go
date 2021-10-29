@@ -113,6 +113,14 @@ func (p IntegralFormalParam) GetRawType() string {
 	return p.Type
 }
 
+// Assert an integral formal param
+func (p IntegralFormalParam) Assert() string {
+	if p.Type == "__int128" {
+		return ""
+	}
+	return "      assert (" + p.GetName() + " == " + p.GetValue() + ");\n"
+}
+
 // Print prints an integral formal param
 func (p IntegralFormalParam) Print() string {
 	// TODO not sure how to do this one

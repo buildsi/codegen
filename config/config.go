@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"path/filepath"
@@ -68,7 +67,6 @@ func loadRendering(item interface{}) Rendering {
 	settings := item.(map[string]interface{})["render"]
 	renders := map[string]Render{}
 	mapstructure.Decode(settings, &renders)
-	fmt.Println(renders)
 
 	// Default needs to be true
 	for key, render := range renders {
@@ -80,7 +78,6 @@ func loadRendering(item interface{}) Rendering {
 		} else {
 			render.Parameters.Pointers = usePointer.(bool)
 		}
-		fmt.Println(render)
 		renders[key] = render
 	}
 	rendering.Renders = renders

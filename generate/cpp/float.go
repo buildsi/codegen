@@ -81,6 +81,11 @@ func (p FloatFormalParam) GetFieldName() string {
 	return p.Name
 }
 
+// Assert an integral formal param
+func (p FloatFormalParam) Assert() string {
+	return "      assert (" + p.GetName() + " == " + p.GetValue() + ");\n"
+}
+
 // Print prints an float formal param
 func (p FloatFormalParam) Print() string {
 	// TODO we will want more custom formatting based on the type here

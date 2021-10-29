@@ -29,6 +29,15 @@ var templateHelpers template.FuncMap = map[string]interface{}{
 		return render
 	},
 
+	// AssertArgs prints an assertion statement for each param
+	"AssertArgs": func(f Function) string {
+		render := ""
+		for _, param := range f.FormalParams {
+			render += param.Assert()
+		}
+		return render
+	},
+
 	// DeclareArgs declares a variable for each argument
 	"DeclareArgs": func(f Function) string {
 		render := ""

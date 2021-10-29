@@ -8,6 +8,7 @@ type FormalParam interface {
 	GetRawType() string
 	Prefix() string
 	Print() string
+	Assert() string
 	Reference() string
 	DeclareFormalParam() string
 	DeclareValue() string
